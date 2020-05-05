@@ -1,0 +1,15 @@
+version: "3.7"
+networks:
+  msa-test-net:
+    name: msa-test-net
+    external: true
+
+services:
+  msa-gateway:
+    image: fpeg/msa-gateway:latest
+    restart: on-failure
+    ports:
+      - 9001:8080
+    networks:
+      msa-test-net:
+        ipv4_address: 172.31.1.2
