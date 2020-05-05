@@ -12,7 +12,7 @@ spring:
     gateway:
       routes:
         - id: login
-          uri: lb://authcenter
+          uri: lb://auth
           predicates:
             - Path=/login
         - id: wordbase
