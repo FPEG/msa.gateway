@@ -1,4 +1,6 @@
 spring:
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration,org.springframework.boot.actuate.autoconfigure.security.reactive.ReactiveManagementWebSecurityAutoConfiguration
   application:
     name: gateway
   profiles:
@@ -14,7 +16,9 @@ spring:
         - id: login
           uri: lb://auth
           predicates:
-            - Path=/login
+            - Path=/auth/**
+          filters:
+            - StripPrefix=1
         - id: wordbase
           uri: lb://wordbase
           predicates:
