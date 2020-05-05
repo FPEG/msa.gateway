@@ -30,7 +30,7 @@ docker {
 	name "fpeg/msa-${rootProject.name}:${version}"
 	// 将 bootJar 任务的输出内容，复制到 build/docker/dependency 下
 	// build/docker/ 为 Docker 工作目录
-	tag "latest" , "fpeg/${rootProject.name}:latest"
+	tag "latest" , "fpeg/msa-${rootProject.name}:latest"
 	files 'Dockerfile'
 //    files tasks.distTar.outputs, 'my-file.txt'
 	// 后续 Dockerfile 中复制文件时，都相对这个位置进行
