@@ -27,7 +27,7 @@ docker {
 	dependsOn bootJar
 	// 镜像名称
 //    name "${project.group}/${bootJar.baseName}"
-	name "fpeg/${rootProject.name}:${version}"
+	name "fpeg/msa-${rootProject.name}:${version}"
 	// 将 bootJar 任务的输出内容，复制到 build/docker/dependency 下
 	// build/docker/ 为 Docker 工作目录
 	tag "latest" , "fpeg/${rootProject.name}:latest"
