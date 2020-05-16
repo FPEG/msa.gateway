@@ -1,13 +1,13 @@
 plugins {
-	id 'org.springframework.boot' version '2.2.6.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-	id 'com.palantir.docker' version '0.25.0'
-	id 'java'
+    id 'org.springframework.boot' version '2.2.6.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'com.palantir.docker' version '0.25.0'
+    id 'java'
 }
 
 configurations.all {
-	// check for updates every build
-	resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+    // check for updates every build
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
 
 group = 'net.fpeg.msa'
@@ -15,63 +15,63 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '14'
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
-	maven {
-		url 'http://192.168.2.119:8002/repository/maven-snapshots/'
-		credentials {
-			username 'admin'
-			password 'password'
-		}
-	}
+    mavenCentral()
+    maven {
+        url(System.getenv('MYENV') == 'TEST') ? NEXUS_URL_TEST : NEXUS_URL_PROD
+        credentials {
+            username NEXUS_USER
+            password(System.getenv('MYENV') == 'TEST') ? NEXUS_PASSWORD_TEST : NEXUS_PASSWORD_PROD
+        }
+    }
 }
 
 ext {
-	set('springCloudVersion', "Hoxton.SR4")
+    set('springCloudVersion', "Hoxton.SR4")
 }
 
 docker {
-	dependsOn bootJar
-	// 镜像名称
+    dependsOn bootJar
+    // 镜像名称
 //    name "${project.group}/${bootJar.baseName}"
-	name "fpeg/msa-${rootProject.name}:${version}"
-	// 将 bootJar 任务的输出内容，复制到 build/docker/dependency 下
-	// build/docker/ 为 Docker 工作目录
-	tag "latest" , "fpeg/msa-${rootProject.name}:latest"
-	files 'Dockerfile'
+    name "fpeg/msa-${rootProject.name}:${version}"
+    // 将 bootJar 任务的输出内容，复制到 build/docker/dependency 下
+    // build/docker/ 为 Docker 工作目录
+    tag "latest", "fpeg/msa-${rootProject.name}:latest"
+    files 'Dockerfile'
 //    files tasks.distTar.outputs, 'my-file.txt'
-	// 后续 Dockerfile 中复制文件时，都相对这个位置进行
+    // 后续 Dockerfile 中复制文件时，都相对这个位置进行
 //    copySpec.from(tasks.bootJar.outputs.files.singleFile).into("dependency")
-	copySpec.from(tasks.bootJar.outputs).into("dependency")
-	// 指定 Dockerfile 的位置
-	buildArgs([FILENAME: "${rootProject.name}-${version}.jar"])
-	dockerfile file("Dockerfile")
+    copySpec.from(tasks.bootJar.outputs).into("dependency")
+    // 指定 Dockerfile 的位置
+    buildArgs([FILENAME: "${rootProject.name}-${version}.jar", PROFILE: "${System.getenv('MYENV')}"])
+    dockerfile file("Dockerfile")
 }
 
 dependencies {
-	implementation 'net.fpeg.msa:common:0.0.1-SNAPSHOT'
-	implementation 'com.h2database:h2'
-	implementation 'org.springframework.cloud:spring-cloud-starter-consul-discovery'
-	implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	}
+    implementation 'net.fpeg.msa:common:0.0.1-SNAPSHOT'
+    implementation 'com.h2database:h2'
+    implementation 'org.springframework.cloud:spring-cloud-starter-consul-discovery'
+    implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
 }
 
 dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-	}
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }

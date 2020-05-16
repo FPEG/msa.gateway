@@ -39,7 +39,7 @@ spring:
 server:
   port: 9101
 spring:
-  profiles: dev
+  profiles: DEV
   cloud:
     consul:
       host: 192.168.2.119
@@ -48,7 +48,7 @@ spring:
 server:
   port: 8080
 spring:
-  profiles: test
+  profiles: TEST
   cloud:
     consul:
       host: 172.31.10.3
@@ -57,4 +57,8 @@ spring:
 server:
   port: 8080
 spring:
-  profiles: prod
+  profiles: PROD
+  cloud:
+    consul:
+      host: 172.22.10.3
+      port: 8500
