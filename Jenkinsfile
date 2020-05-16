@@ -32,21 +32,24 @@ pipeline {
 -v /var/run/docker.sock:/var/run/docker.sock
 -v /usr/bin/docker:/usr/bin/docker
 -e MYENV="${env.MYENV}"
--e HTTP_PROXY="http://172.17.14.139:1081"
--e HTTPS_PROXY="http://172.17.14.139:1081"
+""" + ((env.MYPROXY_HOST == null)? "" : """
+-e HTTP_PROXY="http://${env.MYPROXY_HOST}:${env.MYPROXY_PORT}"
+-e HTTPS_PROXY="http://${env.MYPROXY_HOST}:${env.MYPROXY_PORT}"
 -e NO_PROXY="121.36.41.244"
-"""
+""")
                     }
                 }
             steps {
 				sh """
 gradle \
- -DsystemProp.http.proxyHost=172.17.14.139 \
- -DsystemProp.http.proxyPort=1081 \
- -DsystemProp.http.nonProxyHosts=121.36.41.244 \
- -DsystemProp.https.proxyHost=172.17.14.139 \
- -DsystemProp.https.proxyPort=1081 \
- -DsystemProp.https.nonProxyHosts=121.36.41.244 \
+""" + ((env.MYPROXY_HOST == null)? "" : """ \
+ -Dhttp.proxyHost=${env.MYPROXY_HOST} \
+ -Dhttp.proxyPort=${env.MYPROXY_PORT} \
+ -Dhttp.nonProxyHosts=121.36.41.244 \
+ -Dhttps.proxyHost=${env.MYPROXY_HOST} \
+ -Dhttps.proxyPort=${env.MYPROXY_PORT} \
+ -Dhttps.nonProxyHosts=121.36.41.244 \
+""") + """ \
  docker
 """
 				sh 'gradle dockerTagLatest'
