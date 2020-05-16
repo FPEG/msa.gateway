@@ -37,14 +37,6 @@ ext {
 }
 
 docker {
-//    doFirst{
-//        System.setProperty("systemProp.http.proxyHost", "172.17.14.139")
-//        System.setProperty("systemProp.http.proxyPort", "1081")
-//        System.setProperty("systemProp.http.nonProxyHosts", "121.36.41.244")
-//        System.setProperty("systemProp.https.proxyHost", "172.17.14.139")
-//        System.setProperty("systemProp.https.proxyPort", "1081")
-//        System.setProperty("systemProp.https.nonProxyHosts", "121.36.41.244")
-//    }
     dependsOn bootJar
     // 镜像名称
 //    name "${project.group}/${bootJar.baseName}"
