@@ -23,7 +23,7 @@ configurations {
 repositories {
     mavenCentral()
     maven {
-        url(System.getenv('MYENV') == 'TEST') ? NEXUS_URL_TEST : NEXUS_URL_PROD
+        url (System.getenv('MYENV') == 'TEST') ? NEXUS_URL_TEST : NEXUS_URL_PROD
         credentials {
             username NEXUS_USER
             password (System.getenv('MYENV') == 'TEST') ? NEXUS_PASSWORD_TEST : NEXUS_PASSWORD_PROD
