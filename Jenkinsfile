@@ -2,9 +2,11 @@ pipeline {
     agent any
     stages {
         stage('pre'){
+            steps{
                 script {
                     env.MY_GIT_TAG = sh(returnStdout: true, script: 'git tag -l --points-at HEAD').trim()
                 }
+            }
         }
         stage('down'){
             when {
