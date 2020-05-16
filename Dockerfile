@@ -6,5 +6,4 @@ ARG PROFILE
 ENV PROFILE_ENV=$PROFILE
 COPY "dependency/$FILENAME" "/app/app.jar"
 # 启动容器时运行的命令
-#ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app/app.jar","--spring.profiles.active=${PROFILE_ENV}"]
 ENTRYPOINT java -Djava.security.egd=file:/dev/./urandom -jar /app/app.jar --spring.profiles.active=$PROFILE_ENV
