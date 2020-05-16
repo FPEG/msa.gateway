@@ -41,13 +41,13 @@ pipeline {
             steps {
 				sh """
 gradle
- docker
  -DsystemProp.http.proxyHost=172.17.14.139
  -DsystemProp.http.proxyPort=1081
  -DsystemProp.http.nonProxyHosts=121.36.41.244
  -DsystemProp.https.proxyHost=172.17.14.139
  -DsystemProp.https.proxyPort=1081
  -DsystemProp.https.nonProxyHosts=121.36.41.244
+ docker:docker
 """
 				sh 'gradle dockerTagLatest'
             }
