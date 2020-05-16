@@ -26,7 +26,7 @@ repositories {
         url(System.getenv('MYENV') == 'TEST') ? NEXUS_URL_TEST : NEXUS_URL_PROD
         credentials {
             username NEXUS_USER
-            password(System.getenv('MYENV') == 'TEST') ? NEXUS_PASSWORD_TEST : NEXUS_PASSWORD_PROD
+            password (System.getenv('MYENV') == 'TEST') ? NEXUS_PASSWORD_TEST : NEXUS_PASSWORD_PROD
         }
     }
 }
