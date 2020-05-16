@@ -15,7 +15,7 @@ pipeline {
                     }
                 }
             steps {
-                sh 'docker-compose -f docker-compose.yml -f docker-compose.prod.yml down -v'
+                sh "docker-compose -f docker-compose.yml -f docker-compose.${env.MYENV}.yml down -v"
             }
         }
         stage('build') {
@@ -62,7 +62,7 @@ gradle \
                     }
                 }
             steps {
-                sh 'docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d'
+                sh "docker-compose -f docker-compose.yml -f docker-compose.${env.MYENV}.yml up -d"
             }
         }
     }
