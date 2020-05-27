@@ -22,9 +22,11 @@ configurations {
 
 String get_nexus_info(field) {
     def myenv = System.getenv('MYENV')
+
     if (myenv == null) {
         return project.property("nexus.${field}.dev")
     }
+    print project.property("nexus.${field}.${myenv.toLowerCase()}")
     return project.property("nexus.${field}.${myenv.toLowerCase()}")
 }
 
