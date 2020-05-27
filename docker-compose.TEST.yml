@@ -3,7 +3,7 @@ version: "3.7"
 services:
   msa-gateway:
     ports:
-      - 9001:8080
+      - 2718:8080
     networks:
       msa-test-net:
-        ipv4_address: 172.31.1.2
+        ipv4_address: 172.22.10.1

@@ -6,4 +6,4 @@ services:
       - 2718:8080
     networks:
       msa-test-net:
-        ipv4_address: 172.22.1.1
+        ipv4_address: 172.22.10.1

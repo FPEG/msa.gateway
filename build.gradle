@@ -20,13 +20,21 @@ configurations {
     }
 }
 
+String get_nexus_info(field) {
+    def myenv = System.getenv('MYENV')
+    if (myenv == null) {
+        return project.property("nexus.${field}.dev")
+    }
+    return project.property("nexus.${field}.${myenv.toLowerCase()}")
+}
+
 repositories {
     mavenCentral()
     maven {
-        url System.getenv('MYENV') == 'TEST' ? NEXUS_URL_TEST : NEXUS_URL_PROD
+        url get_nexus_info('url')
         credentials {
-            username NEXUS_USER
-            password System.getenv('MYENV') == 'TEST' ? NEXUS_PASSWORD_TEST : NEXUS_PASSWORD_PROD
+            username get_nexus_info('username')
+            password get_nexus_info('password')
         }
     }
 }
