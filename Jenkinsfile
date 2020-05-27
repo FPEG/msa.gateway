@@ -31,6 +31,7 @@ pipeline {
 -v /root/.gradle:/home/gradle/.gradle
 -v /var/run/docker.sock:/var/run/docker.sock
 -v /usr/bin/docker:/usr/bin/docker
+--network=msa-dev-net
 -e MYENV="${env.MYENV}"
 """ + ((env.MYPROXY_HOST == null)? "" : """
 -e HTTP_PROXY="http://${env.MYPROXY_HOST}:${env.MYPROXY_PORT}"
