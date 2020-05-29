@@ -40,12 +40,16 @@ public class MyGlobalFilter implements GlobalFilter, Ordered {
 //            return exchange.getResponse().setComplete();
 //        }
         //放通登陆
-        if(exchange.getRequest().getURI().getPath().startsWith("/auth/"))
+        if(exchange.getRequest().getURI().getPath().startsWith("/auth/login"))
+        {
+            return chain.filter(exchange);
+        }
+        if(exchange.getRequest().getURI().getPath().startsWith("/auth/register"))
         {
             return chain.filter(exchange);
         }
 
-        String token = "";
+        String token;
         try
         {
             List<String> authorization = Objects.requireNonNull(exchange.getRequest().getHeaders().get("Authorization"));
@@ -54,6 +58,7 @@ public class MyGlobalFilter implements GlobalFilter, Ordered {
         catch (NullPointerException ex)
         {
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+            exchange.getResponse().getHeaders().add("Content-Type", "application/json;charset=UTF-8");
 //            exchange.mutate().response(exchange.getResponse().mutate().headers(httpHeader -> httpHeader.set("mytoken", "test")).build())
 //            exchange.getResponse().m
             ObjectMapper mapper = new ObjectMapper();
@@ -73,6 +78,7 @@ public class MyGlobalFilter implements GlobalFilter, Ordered {
         catch (Exception ex)
         {
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+            exchange.getResponse().getHeaders().add("Content-Type", "application/json;charset=UTF-8");
             byte[] bytes = "{\"value\":\"授权错误\"}".getBytes(StandardCharsets.UTF_8);
             DataBuffer buffer = exchange.getResponse().bufferFactory().wrap(bytes);
             return exchange.getResponse().writeWith(Flux.just(buffer));
